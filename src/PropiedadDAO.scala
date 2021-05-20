@@ -4,18 +4,8 @@ import scala.collection.mutable.ListBuffer
 object PropiedadDAO{
   def main(args: Array[String]): Unit = {
     print("dawfed")
-    val conn:Connection = conexion.getConexion()
     
-    val statement = conn.createStatement
-    val rs = statement.executeQuery("Select * from propertyforrent")
-    while(rs.next){
-      val NoProperty=rs.getString("PropertyNo")
-      val street = rs.getString("street")
-      
-      
-      println("s"+street)
-      
-    }
+    All()
   }
   
   def All(): ListBuffer[Propiedades]={

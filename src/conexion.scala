@@ -3,8 +3,7 @@
 import java.sql.{Connection,DriverManager}
 
 object conexion extends App {
-  
-     
+      getConexion()
    
    private var connection:Connection = null
 
