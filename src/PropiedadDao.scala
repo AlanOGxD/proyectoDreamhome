@@ -1,7 +1,8 @@
+
 import java.sql.Connection
 import scala.collection.mutable.ListBuffer
 
-object PropiedadDAO{
+object PropiedadDao{
   def main(args: Array[String]): Unit = {
     print("dawfed")
     
@@ -11,15 +12,25 @@ object PropiedadDAO{
   def All(): ListBuffer[Propiedades]={
     var propiedadesx = new ListBuffer[Propiedades]()
     val conn:Connection = conexion.getConexion()
+    print("CONNNCDS "+conn)
     val statement = conn.createStatement
     val rs = statement.executeQuery("Select * from propertyforrent")
     while(rs.next){
       val NoProperty=rs.getString("PropertyNo")
       val street = rs.getString("street")
+      val city = rs.getString("city")
+      val postcode = rs.getString("postcode")
+      val types = rs.getString("type")
+      val rooms = rs.getByte("rooms")
+      val rent = rs.getInt("rent")
+      val noOwner = rs.getString("FK_ownerNo")
+      val noStaff = rs.getString("FK_staffNo")
+      val nobranch = rs.getString("FK_branchNo")
+      
       
       
       println("s"+street)
-      val pr = new Propiedades(NoProperty, street, )
+      val pr = new Propiedades(NoProperty, street, city, postcode, types, rooms, rent, noOwner, noStaff, nobranch)
       propiedadesx.+=(pr)
     }
     return propiedadesx
