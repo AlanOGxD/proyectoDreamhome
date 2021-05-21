@@ -27,9 +27,6 @@ object PropiedadDao{
       val noStaff = rs.getString("FK_staffNo")
       val nobranch = rs.getString("FK_branchNo")
       
-      
-      
-      println("s"+street)
       val pr = new Propiedades(NoProperty, street, city, postcode, types, rooms, rent, noOwner, noStaff, nobranch)
       propiedadesx.+=(pr)
     }
