@@ -1,18 +1,13 @@
-import javax.swing.JTextArea
-import javax.swing.JScrollPane
-import javax.swing.JFrame
-import java.awt.BorderLayout
-import java.awt.Dimension
+import scala.swing._
 
 
 object Login extends App {
-  val textArea = new JTextArea
-    val scrollPane = new JScrollPane(textArea)
-    val frame = new JFrame("Login")
+   
+    val frame = new MainFrame{
+    title="Login DreamHome"
+    size = new Dimension(500,500)
     
-    frame.getContentPane.add(scrollPane, BorderLayout.CENTER)
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
-    frame.setSize(new Dimension(600, 400))
-    frame.setLocationRelativeTo(null)
-    frame.setVisible(true)
+    
+} 
+    frame.visible = true
 }
