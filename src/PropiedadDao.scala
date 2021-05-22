@@ -27,7 +27,28 @@ object PropiedadDao{
       val noStaff = rs.getString("FK_staffNo")
       val nobranch = rs.getString("FK_branchNo")
       
-      val pr = new Propiedades(NoProperty, street, city, postcode, types, rooms, rent, noOwner, noStaff, nobranch)
+      println("o1= "+noOwner)
+      val statement2 = conn.createStatement
+      val rs2 = statement2.executeQuery("Select * from privateowner where OwnerNo = '"+noOwner+"'")
+      var propietario=""
+     
+      while(rs2.next) {propietario=rs2.getString("fName")}
+      
+      
+      val statement3 = conn.createStatement
+      val rs3 = statement3.executeQuery("Select * from staff where StaffNo='"+noStaff+"'")
+      var personal=""
+      while(rs3.next) {personal=rs3.getString("fName")}
+            
+      val statement4 = conn.createStatement
+      val rs4 = statement4.executeQuery("Select * from branch where branchNo='"+nobranch+"'")
+      var sucursal=""
+     while(rs4.next) {sucursal = rs4.getString("Street")}
+      println("o= "+propietario)
+      println("p= "+personal)
+      println("s= "+sucursal)
+      
+      val pr = new Propiedades(NoProperty, street, city, postcode, types, rooms, rent, propietario, personal, sucursal)
       propiedadesx.+=(pr)
     }
     return propiedadesx
