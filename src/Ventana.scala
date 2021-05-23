@@ -3,14 +3,14 @@ import javax.swing.JScrollPane
 import javax.swing.JFrame
 import java.awt.Dimension
 import java.awt.BorderLayout
-
+import scala.swing._
 
 
 object Ventana extends App {
   
     val textArea = new JTextArea
     val scrollPane = new JScrollPane(textArea)
-    val frame = new JFrame("Ventana")
+    val frame = new JFrame("prueba")
     
     frame.getContentPane.add(scrollPane, BorderLayout.CENTER)
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)

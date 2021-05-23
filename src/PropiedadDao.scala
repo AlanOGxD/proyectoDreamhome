@@ -27,7 +27,6 @@ object PropiedadDao{
       val noStaff = rs.getString("FK_staffNo")
       val nobranch = rs.getString("FK_branchNo")
       
-      println("o1= "+noOwner)
       val statement2 = conn.createStatement
       val rs2 = statement2.executeQuery("Select * from privateowner where OwnerNo = '"+noOwner+"'")
       var propietario=""
