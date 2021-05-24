@@ -12,7 +12,6 @@ object PropiedadDao{
   def All(): ListBuffer[Propiedades]={
     var propiedadesx = new ListBuffer[Propiedades]()
     val conn:Connection = conexion.getConexion()
-    print("CONNNCDS "+conn)
     val statement = conn.createStatement
     val rs = statement.executeQuery("Select * from propertyforrent")
     while(rs.next){
