@@ -86,6 +86,7 @@ object Login extends SimpleSwingApplication {
     
     try{
     if(rs.next){
+      Login.quit()
       Ventana
     }else{
       Dialog.showMessage(top, "Wrong username or password!", "Login Error", Dialog.Message.Error)
