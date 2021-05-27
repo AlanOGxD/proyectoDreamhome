@@ -1,7 +1,7 @@
 
-
-class Usuario (private var iduser:Integer,private var usuario:String,private var password:String){
-  def getId()=iduser
+//private var iduser:Integer,def getId()=iduser
+class Usuario (private var usuario:String,private var password:String){
+  
   def getUsuario()=usuario
   def getpass()=password
   

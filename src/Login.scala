@@ -7,6 +7,7 @@ import java.io.File
 import javax.imageio.ImageIO
 import scala.swing.event.ButtonClicked
 import java.sql.Connection
+import com.mysql.cj.x.protobuf.MysqlxCursor.Open
 
 object Login extends SimpleSwingApplication {
 
@@ -62,7 +63,7 @@ object Login extends SimpleSwingApplication {
           case ButtonClicked(component) if component == btnIniciarSesion =>
         val pass = textPass.peer.getText().toString()
         val user = textUsuario.text.toString()
-        val us =new Usuario(0,user, pass)
+        val us =new Usuario(user, pass)
      validarusuario(us)  
         }
       }
@@ -85,7 +86,7 @@ object Login extends SimpleSwingApplication {
     
     try{
     if(rs.next){
-      
+      Ventana
     }else{
       Dialog.showMessage(top, "Wrong username or password!", "Login Error", Dialog.Message.Error)
       
