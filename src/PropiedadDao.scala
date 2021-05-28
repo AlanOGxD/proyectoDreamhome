@@ -1,11 +1,17 @@
 
 import java.sql.Connection
 import scala.collection.mutable.ListBuffer
+import scala.swing.Dialog
 
 object PropiedadDao{
   val conn:Connection = conexion.getConexion()
   def main(args: Array[String]): Unit = {
     
+  }
+  
+  def baja(no:String):Unit={
+    val statement2 = conn.createStatement
+      val rs2 = statement2.executeQuery("delete from propertyforrent where PropertyNo = '"+no+"'")
   }
   
   def All(): ListBuffer[Propiedades]={
@@ -41,9 +47,7 @@ object PropiedadDao{
       val rs4 = statement4.executeQuery("Select * from branch where branchNo='"+nobranch+"'")
       var sucursal=""
      while(rs4.next) {sucursal = rs4.getString("Street")}
-      println("o= "+propietario)
-      println("p= "+personal)
-      println("s= "+sucursal)
+      
       
       val pr = new Propiedades(NoProperty, street, city, postcode, types, rooms, rent, propietario, personal, sucursal)
       propiedadesx.+=(pr)
@@ -131,16 +135,37 @@ object PropiedadDao{
   
   def altas(P:String , S:String, C:String, PC:String, T:String, RS:Integer, R:Integer, PN:String, SN:String, BN:String):Unit={
     val st = conn.createStatement
+    val st2 = conn.createStatement
+    val st3 = conn.createStatement
+    val st4 = conn.createStatement
     val sql = "Select * from privateowner where fName = '"+PN+"'"
     val sql2 = "Select * from staff where fName = '"+SN+"'"
-    val sql3 = "Select * from branch where fName = '"+BN+"'"
+    val sql3 = "Select * from branch where Street = '"+BN+"'"
     val p = "P"+C.charAt(0)+P
     val fp = st.executeQuery(sql)
-    val fs = st.executeQuery(sql2) 
-    val fb = st.executeQuery(sql3) 
+    val fs = st2.executeQuery(sql2) 
+    val fb = st3.executeQuery(sql3) 
     
-    
-      val rs2 = st.executeQuery("Insert into propertyforrent (PropertyNo, street, city, postcode, type, rooms, rent, FK_ownerNo, FK_staffNo, FK_branchNo) values('"+p+"', '"+S+"','"+C+"','"++"','"++"','"++"','"++"','"++"','"++"','"++"')")
+    var FS =""
+    var FB =""
+    var FP =""
+    while(fp.next()){
+       FP = fp.getString("OwnerNo")
+       println(FP)
+    }
+    while(fs.next()){ FS=fs.getString("StaffNo")}
+    while(fb.next()){ FB=fb.getString("branchNo")}
+  
+   println(FS)
+   println(FB)
+   val sqlf="Insert into propertyforrent (PropertyNo, street, city, postcode, type, rooms, rent, FK_ownerNo, FK_staffNo, FK_branchNo) values('"+p+"', '"+S+"','"+C+"','"+PC+"','"+T+"','"+RS+"','"+R+"','"+FP+"','"+FS+"','"+FB+"')"
+      val rs2 = st4.execute(sqlf)
+      
+      if(rs2.!=(null)){
+        Dialog.showMessage(Ventana.top, "El registro se realizó con exito!", "Alta realizada", Dialog.Message.Info)
+      }else{
+        Dialog.showMessage(Ventana.top, "Error al realizar alta", "Alta Error", Dialog.Message.Info)
+      }
   }
 
 }

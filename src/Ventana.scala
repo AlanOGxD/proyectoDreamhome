@@ -249,12 +249,25 @@ preferredSize_=(new Dimension(1400, 300))
       reactions += {
           case ButtonClicked(component) if component == btnAgregar =>
             val PropertyNo = txtProperty.text
+            val dire = txtStreet.text
+            val ciudad = txtcity.text
+            val cp = txtpostcode.text
+            val tipo = combotipo.selection.item.toString()
+            val habita = txtrooms.text.toInt
+            val renta = txtrent.text.toInt
+            val propietario = comboOwner.item.toString()
+            val personal = comboStaff.item.toString()
+            val sucursal = comboBranch.item.toString()
             
-            
-            
+            PropiedadDao.altas(PropertyNo, dire, ciudad, cp, tipo, habita, renta, propietario, personal, sucursal)
+          case ButtonClicked(component) if component == btnEliminar=>
+            val PropertyNo = txtProperty.text
+            print(PropertyNo)
+            PropiedadDao.baja(PropertyNo)
+            Dialog.showMessage(Ventana.top, "El registro se eliminó con exito!", "Baja realizada", Dialog.Message.Info)
         }
     }
-    contents += scrout
+    //contents += scrout
     listenTo(table.selection)
     
 
@@ -268,7 +281,7 @@ preferredSize_=(new Dimension(1400, 300))
         outputSelection(source, "Columns selected, changes: %s" format range)
       case TableColumnHeaderSelected(source, column) =>
         outputSelection(source, "Column header %s selected" format column)
-      case e => println("%s => %s" format (e.getClass.getSimpleName, e.toString))
+      //case e => println("%s => %s" format (e.getClass.getSimpleName, e.toString))
     }
     def outputSelection(table: Table, msg: String) {
       val rowId = table.selection.rows.leadIndex
@@ -285,6 +298,7 @@ preferredSize_=(new Dimension(1400, 300))
       val propietario = rowData(rowId)(7)
       
       val lista = PropiedadDao.buscarPro(propiedadno.toString())
+      
       txtProperty.text_=(lista(0).getPropertyNo())
       txtStreet.text_=(lista(0).getstreet())
       txtcity.text_=(lista(0).getcity())
@@ -295,7 +309,7 @@ preferredSize_=(new Dimension(1400, 300))
       comboOwner.selection.item_=(lista(0).getpropietario())
       comboStaff.selection.item_=(lista(0).getpersonal())
       comboBranch.selection.item_=(lista(0).getsucuarsal())
-      
+      txtProperty.editable_=(false)
       //output.append("%s\n  Lead: %s, %s; Rows: %s; Columns: %s\n" format (msg, rowId, colId, rows, cols))
     }
   }
