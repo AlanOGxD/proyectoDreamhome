@@ -3,10 +3,9 @@ import java.sql.Connection
 import scala.collection.mutable.ListBuffer
 
 object PropiedadDao{
+  val conn:Connection = conexion.getConexion()
   def main(args: Array[String]): Unit = {
-    print("dawfed")
     
-    All()
   }
   
   def All(): ListBuffer[Propiedades]={
@@ -50,6 +49,57 @@ object PropiedadDao{
       propiedadesx.+=(pr)
     }
     return propiedadesx
+  }
+  
+  
+  def propietarionames(): ListBuffer[String]={
+     val conn:Connection = conexion.getConexion()
+    val statement2 = conn.createStatement
+      val rs2 = statement2.executeQuery("Select fName from privateowner")
+      var propietario=new ListBuffer[String]()
+     
+      while(rs2.next) {
+        propietario += rs2.getString("fName")
+        }
+     return propietario
+  }
+  
+  def staffnames(): ListBuffer[String]={
+     val conn:Connection = conexion.getConexion()
+    val statement2 = conn.createStatement
+      val rs2 = statement2.executeQuery("Select fName from staff")
+      var staff=new ListBuffer[String]()
+     
+      while(rs2.next) {
+        staff += rs2.getString("fName")
+        }
+     return staff
+  }
+  
+  def branchnames(): ListBuffer[String]={
+     val conn:Connection = conexion.getConexion()
+    val statement2 = conn.createStatement
+      val rs2 = statement2.executeQuery("Select Street from branch")
+      var branch=new ListBuffer[String]()
+     
+      while(rs2.next) {
+        branch += rs2.getString("Street")
+        }
+     return branch
+  }
+  
+  def altas(P:String , S:String, C:String, PC:String, T:String, RS:Integer, R:Integer, PN:String, SN:String, BN:String):Unit={
+    val st = conn.createStatement
+    val sql = "Select * from privateowner where fName = '"+PN+"'"
+    val sql2 = "Select * from staff where fName = '"+SN+"'"
+    val sql3 = "Select * from branch where fName = '"+BN+"'"
+    val p = "P"+C.charAt(0)+P
+    val fp = st.executeQuery(sql)
+    val fs = st.executeQuery(sql2) 
+    val fb = st.executeQuery(sql3) 
+    
+    
+      val rs2 = st.executeQuery("Insert into propertyforrent (PropertyNo, street, city, postcode, type, rooms, rent, FK_ownerNo, FK_staffNo, FK_branchNo) values('"+p+"', '"+S+"','"+C+"','"++"','"++"','"++"','"++"','"++"','"++"','"++"')")
   }
 
 }
