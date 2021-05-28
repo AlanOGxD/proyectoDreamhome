@@ -92,7 +92,10 @@ preferredSize_=(new Dimension(1400, 300))
     val TFBusqueda = new TextField("") {
       //size_=(new Dimension(30, 60))
       tooltip = "Ingresa la busqueda"
-
+      listenTo(keys)
+      reactions += { case e: KeyTyped =>
+        
+      }
     }
 
     contents += TFBusqueda
@@ -113,7 +116,7 @@ preferredSize_=(new Dimension(1400, 300))
       rowData2(i)(7) = listapropiedad(i).getpropietario()
        }
     
-      table.updateCell(_, _)
+      
    
      val txtProperty = new TextField {
       columns = 10

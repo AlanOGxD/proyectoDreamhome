@@ -8,7 +8,21 @@ object PropiedadDao{
   def main(args: Array[String]): Unit = {
     
   }
-  
+busquedaAvanzada("16")  
+  def busquedaAvanzada(busqueda:String){
+    var propiedadesx = new ListBuffer[Propiedades]()
+    val conn:Connection = conexion.getConexion()
+    val statement = conn.createStatement
+    val rs = statement.executeQuery("Select * from propertyforrent as pfr inner join staff as staff, branch as branch, privateowner as owner where (pfr.FK_branchNo=branch.branchNo and branch.Street like '%"+busqueda+"%') or (pfr.FK_ownerNo=owner.OwnerNo and owner.fName like '%"+busqueda+"%') or (pfr.FK_staffNo=staff.StaffNo and staff.fName like '%"+busqueda+"%') or pfr.street like '%"+busqueda+"%' or pfr.city like  '%"+busqueda+"%' or pfr.type like  '%"+busqueda+"%' ")
+    var p =""
+    println()
+    while(rs.next()){
+      if(rs.getString("PropertyNo")!=p){
+        p=rs.getString("PropertyNo")
+      println(rs.getString("PropertyNo"))
+    }
+      }
+  }
   def baja(no:String):Unit={
     val statement2 = conn.createStatement
       val rs2 = statement2.execute("delete from propertyforrent where PropertyNo = '"+no+"'")
