@@ -133,6 +133,60 @@ object PropiedadDao{
     return propiedadesx
   }
   
+  def cambios(P:String , S:String, C:String, PC:String, T:String, RS:Integer, R:Integer, PN:String, SN:String, BN:String):Unit={
+    val st = conn.createStatement
+    val st2 = conn.createStatement
+    val st3 = conn.createStatement
+    
+    val sql = "Select * from privateowner where fName = '"+PN+"'"
+    val sql2 = "Select * from staff where fName = '"+SN+"'"
+    val sql3 = "Select * from branch where Street = '"+BN+"'"
+    val p = "P"+C.charAt(0)+P
+    val fp = st.executeQuery(sql)
+    val fs = st2.executeQuery(sql2) 
+    val fb = st3.executeQuery(sql3) 
+    
+    var FS =""
+    var FB =""
+    var FP =""
+    while(fp.next()){ FP = fp.getString("OwnerNo")}
+    while(fs.next()){ FS=fs.getString("StaffNo")}
+    while(fb.next()){ FB=fb.getString("branchNo")}
+    println()
+    println(p+" "+S+" "+C+" "+PC)
+    println(T)
+    println(R)
+    println(RS)
+    println(FP)
+    println(FS+" "+FB)
+    val st4 = conn.prepareStatement("UPDATE propertyforrent SET street=?, city=?, postcode=? , type =?, rooms=?, rent=?, FK_ownerNo=?, FK_staffNo=?, FK_branchNo=? where PropertyNo = ?;")
+   st4.setString(1, S)
+   st4.setString(2, C)
+   st4.setString(3, PC)
+   st4.setString(4, T)
+   st4.setInt(5, RS)
+   st4.setInt(6, R)
+   st4.setString(7, FP)
+   st4.setString(8, FS)
+   st4.setString(9, FB)
+   st4.setString(10, P)
+   
+   
+    //val sqlf="UPDATE propertyforrent SET street='"+S+"', city='"+C+"', postcode='"+PC+"', type ='"+T+"', rooms='"+RS+"', rent='"+R+"', FK_ownerNo='"+FP+"', FK_staffNo='"+FS+"', FK_branchNo='"+FB+"' where PropertyNo = '"+p+"'"
+      //val rs2 = st4.executeUpdate()
+     try{
+       val rs2 = st4.executeUpdate()
+       if(rs2>0){
+        Dialog.showMessage(Ventana.top, "El registro se realizó con exito!", "Cambios realizados", Dialog.Message.Info)
+      }else{
+        Dialog.showMessage(Ventana.top, "Error al realizar Cambios", "Cambios Error", Dialog.Message.Info)
+      }
+     }catch{
+        case e: Exception => e.printStackTrace
+     }
+      
+  }
+  
   def altas(P:String , S:String, C:String, PC:String, T:String, RS:Integer, R:Integer, PN:String, SN:String, BN:String):Unit={
     val st = conn.createStatement
     val st2 = conn.createStatement

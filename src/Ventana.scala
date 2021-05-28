@@ -258,6 +258,7 @@ preferredSize_=(new Dimension(1400, 300))
       listenTo(btnAgregar)
       listenTo(btnEliminar)
       listenTo(btnLimpiar)
+      listenTo(btnModificar)
       reactions += {
           case ButtonClicked(component) if component == btnAgregar =>
             
@@ -304,6 +305,8 @@ preferredSize_=(new Dimension(1400, 300))
               Dialog.showMessage(Ventana.top, "El campo 'Habitaciones' se encuentra vacio", "Error", Dialog.Message.Error)
             }else if(txtrent.text.isEmpty()){
               Dialog.showMessage(Ventana.top, "El campo 'Renta' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtrooms.text.toInt > 127){
+              Dialog.showMessage(Ventana.top, "El campo 'Habitaciones' excedio el numero posible", "Error", Dialog.Message.Error)
             }else{
             val PropertyNo = txtProperty.text
             //txtProperty.editable_=(false)
@@ -314,6 +317,39 @@ preferredSize_=(new Dimension(1400, 300))
             }
           case ButtonClicked(component) if component == btnLimpiar =>
             limpiar()
+            
+          case ButtonClicked(component) if component == btnModificar=>
+             //txtProperty.editable_=(true)
+            if(txtProperty.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'Numero de propiedad' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtStreet.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'direccion' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtcity.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'Ciudad' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtpostcode.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'Codigo postal' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtrooms.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'Habitaciones' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtrent.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'Renta' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtrooms.text.toInt > 127){
+              Dialog.showMessage(Ventana.top, "El campo 'Habitaciones' excedio el numero posible", "Error", Dialog.Message.Error)
+            }else{
+            val PropertyNo = txtProperty.text
+            val dire = txtStreet.text
+            val ciudad = txtcity.text
+            val cp = txtpostcode.text
+            val tipo = combotipo.selection.item.toString()
+            val habita = txtrooms.text.toInt
+            val renta = txtrent.text.toInt
+            val propietario = comboOwner.item.toString()
+            val personal = comboStaff.item.toString()
+            val sucursal = comboBranch.item.toString()
+            
+            PropiedadDao.cambios(PropertyNo, dire, ciudad, cp, tipo, habita, renta, propietario, personal, sucursal)
+            //Dialog.showMessage(Ventana.top, "El registro se eliminó con exito!", "Baja realizada", Dialog.Message.Info)
+            limpiar()
+            }
         }
     }
     //contents += scrout
