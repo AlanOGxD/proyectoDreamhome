@@ -5,9 +5,9 @@ import swing.event.{ TableRowsSelected, TableEvent, TableColumnsSelected, Button
 import java.sql.Connection
 import scala.collection.mutable.ListBuffer
 import java.awt.{ Component => AWTComponent }
-import javafx.geometry.VerticalDirection
 import java.awt.Dimension
 import java.awt.event._
+import scala.swing.event.KeyTyped
 
 object Ventana extends SimpleSwingApplication {
 
@@ -19,6 +19,7 @@ object Ventana extends SimpleSwingApplication {
     centerOnScreen()
     contents = box
   }
+  top.centerOnScreen()
   top.size_=(new Dimension(1500, 600))
 
   //val cajabuscar = new TextField() {}
@@ -42,7 +43,7 @@ object Ventana extends SimpleSwingApplication {
     listapropiedad = PropiedadDao.All()
 
     var rowData = Array.ofDim[Any](listapropiedad.length, 13)
-    val btnEditar = new Button("eliminar")
+    
 
     for (i <- 0 until listapropiedad.length) {
       rowData(i)(0) = listapropiedad(i).getPropertyNo()
@@ -94,11 +95,31 @@ preferredSize_=(new Dimension(1400, 300))
 
     contents += TFBusqueda
     contents += scrtable
+    listapropiedad = PropiedadDao.All()
+
+    var rowData2 = Array.ofDim[Any](listapropiedad.length, 13)
+    val headers2 = Array("NumPropiedad", "Street", "city", "codigo postal", "tipo", "habitaciones", "renta", "Propietario")
+
+    for (i <- 0 until listapropiedad.length) {
+      rowData2(i)(0) = listapropiedad(i).getPropertyNo()
+      rowData2(i)(1) = listapropiedad(i).getstreet()
+      rowData2(i)(2) = listapropiedad(i).getcity()
+      rowData2(i)(3) = listapropiedad(i).getpostcode()
+      rowData2(i)(4) = listapropiedad(i).gettypes()
+      rowData2(i)(5) = listapropiedad(i).getrooms()
+      rowData2(i)(6) = listapropiedad(i).getrent()
+      rowData2(i)(7) = listapropiedad(i).getpropietario()
+       }
     
-    
+      table.updateCell(_, _)
+   
      val txtProperty = new TextField {
       columns = 10
         tooltip = "Ingresa el numero de propiedad"
+        listenTo(keys)
+      reactions += { case e: KeyTyped =>
+        if (!e.char.isDigit) e.consume
+      }
       }
       val txtStreet = new TextField {
         columns = 10
@@ -107,6 +128,10 @@ preferredSize_=(new Dimension(1400, 300))
       val txtcity = new TextField {
         columns = 10
         tooltip = "Ingresa la ciudad"
+        listenTo(keys)
+      reactions += { case e: KeyTyped =>
+        if (e.char.isDigit) e.consume
+      }
       }
       val txtpostcode = new TextField{
         columns = 10
@@ -119,9 +144,18 @@ preferredSize_=(new Dimension(1400, 300))
       val txtrooms = new TextField {
         columns = 10
         tooltip = "Ingresa el numero de habitaciones"
+        listenTo(keys)
+      reactions += { case e: KeyTyped =>
+        if (!e.char.isDigit) e.consume
       }
-      val txtrent = new TextField("			") {
+      }
+      val txtrent = new TextField {
+        columns = 10
         tooltip = "Ingresa el costo de la renta"
+        listenTo(keys)
+      reactions += { case e: KeyTyped =>
+        if (!e.char.isDigit) e.consume
+      }
       }
       
       val btnEliminar = new Button("Eliminar"){
@@ -204,26 +238,35 @@ preferredSize_=(new Dimension(1400, 300))
       contents += new FlowPanel {
         contents += btnAgregar
         contents += btnEliminar
-        contents += btnEditar
+        contents += btnModificar
         contents += btnLimpiar
       }
+      
+      def actualizar_tabla(){}
       
       listenTo(btnAgregar)
       reactions += {
           case ButtonClicked(component) if component == btnAgregar =>
             val PropertyNo = txtProperty.text
+            
+            print(txtProperty.text.isEmpty())
+            if (txtProperty.verifier == false){
             println("p:"+PropertyNo)
+            }else{
+              println("p2:"+PropertyNo)
+            }
             
         }
     }
     contents += scrout
     listenTo(table.selection)
+    
 
     reactions += {
       case TableRowsSelected(source, range, false) =>
         outputSelection(source, "Rows selected, changes: %s" format range)
         for (j <- 0 to rowData.length){
-          print(rowData.toSeq)
+          print("ds: "+ rowData.toSeq.toString())
         }
       case TableColumnsSelected(source, range, false) =>
         outputSelection(source, "Columns selected, changes: %s" format range)
@@ -236,11 +279,23 @@ preferredSize_=(new Dimension(1400, 300))
       val colId = table.selection.columns.leadIndex
       val rows = table.selection.rows.mkString(", ")
       val cols = table.selection.columns.mkString(", ")
-      print("rid: "+rowId)
-      print("rs: "+TableRowsSelected.toString())
-        
+      val propiedadno = rowData(rowId)(0)
+      val street = rowData(rowId)(1)
+      val ciudad = rowData(rowId)(2)
+      val cpostal = rowData(rowId)(3)
+      val tipo = rowData(rowId)(4)
+      val habitaciones = rowData(rowId)(5)
+      val renta = rowData(rowId)(6)
+      val propietario = rowData(rowId)(7)
       
-      output.append("%s\n  Lead: %s, %s; Rows: %s; Columns: %s\n" format (msg, rowId, colId, rows, cols))
+      val lista = PropiedadDao.buscarPro(propiedadno.toString())
+      txtProperty.text_=(lista(0).getPropertyNo())
+      txtStreet.text_=(lista(0).getstreet())
+      txtcity.text_=(lista(0).getcity())
+      
+      
+      
+      //output.append("%s\n  Lead: %s, %s; Rows: %s; Columns: %s\n" format (msg, rowId, colId, rows, cols))
     }
   }
   
