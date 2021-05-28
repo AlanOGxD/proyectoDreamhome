@@ -8,6 +8,7 @@ import java.awt.{ Component => AWTComponent }
 import java.awt.Dimension
 import java.awt.event._
 import scala.swing.event.KeyTyped
+import javax.swing.plaf.basic.ComboPopup
 
 object Ventana extends SimpleSwingApplication {
 
@@ -249,12 +250,7 @@ preferredSize_=(new Dimension(1400, 300))
           case ButtonClicked(component) if component == btnAgregar =>
             val PropertyNo = txtProperty.text
             
-            print(txtProperty.text.isEmpty())
-            if (txtProperty.verifier == false){
-            println("p:"+PropertyNo)
-            }else{
-              println("p2:"+PropertyNo)
-            }
+            
             
         }
     }
@@ -292,8 +288,13 @@ preferredSize_=(new Dimension(1400, 300))
       txtProperty.text_=(lista(0).getPropertyNo())
       txtStreet.text_=(lista(0).getstreet())
       txtcity.text_=(lista(0).getcity())
-      
-      
+      txtpostcode.text_=(lista(0).getpostcode())
+      combotipo.selection.item_=(lista(0).gettypes())
+      txtrooms.text_=(lista(0).getrooms().toString())
+      txtrent.text_=(lista(0).getrent().toString())
+      comboOwner.selection.item_=(lista(0).getpropietario())
+      comboStaff.selection.item_=(lista(0).getpersonal())
+      comboBranch.selection.item_=(lista(0).getsucuarsal())
       
       //output.append("%s\n  Lead: %s, %s; Rows: %s; Columns: %s\n" format (msg, rowId, colId, rows, cols))
     }
