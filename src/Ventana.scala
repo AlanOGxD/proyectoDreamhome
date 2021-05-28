@@ -9,6 +9,7 @@ import java.awt.Dimension
 import java.awt.event._
 import scala.swing.event.KeyTyped
 import javax.swing.plaf.basic.ComboPopup
+import sun.invoke.empty.Empty
 
 object Ventana extends SimpleSwingApplication {
 
@@ -244,11 +245,37 @@ preferredSize_=(new Dimension(1400, 300))
       }
       
       def actualizar_tabla(){}
+      def limpiar(){
+      txtProperty.text_=("")
+      txtStreet.text_=("")
+      txtcity.text_=("")
+      txtpostcode.text_=("")
+      txtrooms.text_=("")
+      txtrent.text_=("")
+      txtProperty.editable_=(true)
+      }
       
       listenTo(btnAgregar)
       listenTo(btnEliminar)
+      listenTo(btnLimpiar)
       reactions += {
           case ButtonClicked(component) if component == btnAgregar =>
+            
+            if(txtProperty.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'Numero de propiedad' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtStreet.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'direccion' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtcity.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'Ciudad' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtpostcode.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'Codigo postal' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtrooms.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'Habitaciones' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtrent.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'Renta' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtrooms.text.toInt > 127){
+              Dialog.showMessage(Ventana.top, "El campo 'Habitaciones' excedio el numero posible", "Error", Dialog.Message.Error)
+            }else{
             val PropertyNo = txtProperty.text
             val dire = txtStreet.text
             val ciudad = txtcity.text
@@ -261,13 +288,32 @@ preferredSize_=(new Dimension(1400, 300))
             val sucursal = comboBranch.item.toString()
             
             PropiedadDao.altas(PropertyNo, dire, ciudad, cp, tipo, habita, renta, propietario, personal, sucursal)
+            }
+            
           case ButtonClicked(component) if component == btnEliminar=>
              //txtProperty.editable_=(true)
+            if(txtProperty.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'Numero de propiedad' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtStreet.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'direccion' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtcity.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'Ciudad' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtpostcode.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'Codigo postal' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtrooms.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'Habitaciones' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else if(txtrent.text.isEmpty()){
+              Dialog.showMessage(Ventana.top, "El campo 'Renta' se encuentra vacio", "Error", Dialog.Message.Error)
+            }else{
             val PropertyNo = txtProperty.text
             //txtProperty.editable_=(false)
             println(PropertyNo)
             PropiedadDao.baja(PropertyNo)
             Dialog.showMessage(Ventana.top, "El registro se eliminó con exito!", "Baja realizada", Dialog.Message.Info)
+            limpiar()
+            }
+          case ButtonClicked(component) if component == btnLimpiar =>
+            limpiar()
         }
     }
     //contents += scrout
