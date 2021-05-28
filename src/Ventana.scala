@@ -246,6 +246,7 @@ preferredSize_=(new Dimension(1400, 300))
       def actualizar_tabla(){}
       
       listenTo(btnAgregar)
+      listenTo(btnEliminar)
       reactions += {
           case ButtonClicked(component) if component == btnAgregar =>
             val PropertyNo = txtProperty.text
@@ -261,8 +262,10 @@ preferredSize_=(new Dimension(1400, 300))
             
             PropiedadDao.altas(PropertyNo, dire, ciudad, cp, tipo, habita, renta, propietario, personal, sucursal)
           case ButtonClicked(component) if component == btnEliminar=>
+             //txtProperty.editable_=(true)
             val PropertyNo = txtProperty.text
-            print(PropertyNo)
+            //txtProperty.editable_=(false)
+            println(PropertyNo)
             PropiedadDao.baja(PropertyNo)
             Dialog.showMessage(Ventana.top, "El registro se eliminó con exito!", "Baja realizada", Dialog.Message.Info)
         }

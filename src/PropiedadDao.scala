@@ -11,7 +11,7 @@ object PropiedadDao{
   
   def baja(no:String):Unit={
     val statement2 = conn.createStatement
-      val rs2 = statement2.executeQuery("delete from propertyforrent where PropertyNo = '"+no+"'")
+      val rs2 = statement2.execute("delete from propertyforrent where PropertyNo = '"+no+"'")
   }
   
   def All(): ListBuffer[Propiedades]={
