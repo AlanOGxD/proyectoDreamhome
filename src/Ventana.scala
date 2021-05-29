@@ -85,36 +85,61 @@ object Ventana extends SimpleSwingApplication {
       }
     }
 
+    def actualizar_tabla(){
+      var lista = new ListBuffer[Propiedades]
+    val t = TFBusqueda.text.toString()
+    println(t)
+    lista = PropiedadDao.busquedaAvanzada(t)
+    
+    for (i <- 0 until lista.length) {
+      
+      rowData(i)(0) = listapropiedad(i).getPropertyNo()
+      rowData(i)(1) = listapropiedad(i).getstreet()
+      rowData(i)(2) = listapropiedad(i).getcity()
+      rowData(i)(3) = listapropiedad(i).getpostcode()
+      rowData(i)(4) = listapropiedad(i).gettypes()
+      rowData(i)(5) = listapropiedad(i).getrooms()
+      rowData(i)(6) = listapropiedad(i).getrent()
+      rowData(i)(7) = listapropiedad(i).getpropietario()
+      rowData(i)(8) = listapropiedad(i).getpersonal()
+      rowData(i)(9) = listapropiedad(i).getsucuarsal()
+
+      val cont = table.rowCount
+      
+      table.update(i, 0, rowData(i)(0))
+      table.update(i, 1, rowData(i)(1))
+      table.update(i, 2, rowData(i)(2))
+      table.update(i, 3, rowData(i)(3))
+      table.update(i, 4, rowData(i)(4))
+      table.update(i, 5, rowData(i)(5))
+      table.update(i, 6, rowData(i)(6))
+      table.update(i, 7, rowData(i)(7))
+      table.update(i, 8, rowData(i)(8))
+      table.update(i, 9, rowData(i)(9))
+    }
+      
+    }
+  
+
     val scrtable = new ScrollPane(table){
 preferredSize_=(new Dimension(1400, 300))
     }
     val scrout = new ScrollPane(output)
     val TFBusqueda = new TextField("") {
+      
       //size_=(new Dimension(30, 60))
       tooltip = "Ingresa la busqueda"
       listenTo(keys)
+      
+      
       reactions += { case e: KeyTyped =>
-        
+       actualizar_tabla()
+
       }
     }
 
     contents += TFBusqueda
     contents += scrtable
-    listapropiedad = PropiedadDao.All()
-
-    var rowData2 = Array.ofDim[Any](listapropiedad.length, 13)
-    val headers2 = Array("NumPropiedad", "Street", "city", "codigo postal", "tipo", "habitaciones", "renta", "Propietario")
-
-    for (i <- 0 until listapropiedad.length) {
-      rowData2(i)(0) = listapropiedad(i).getPropertyNo()
-      rowData2(i)(1) = listapropiedad(i).getstreet()
-      rowData2(i)(2) = listapropiedad(i).getcity()
-      rowData2(i)(3) = listapropiedad(i).getpostcode()
-      rowData2(i)(4) = listapropiedad(i).gettypes()
-      rowData2(i)(5) = listapropiedad(i).getrooms()
-      rowData2(i)(6) = listapropiedad(i).getrent()
-      rowData2(i)(7) = listapropiedad(i).getpropietario()
-       }
     
       
    
@@ -247,7 +272,7 @@ preferredSize_=(new Dimension(1400, 300))
         contents += btnLimpiar
       }
       
-      def actualizar_tabla(){}
+      
       def limpiar(){
       txtProperty.text_=("")
       txtStreet.text_=("")

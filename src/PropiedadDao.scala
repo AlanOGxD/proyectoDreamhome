@@ -8,8 +8,8 @@ object PropiedadDao{
   def main(args: Array[String]): Unit = {
     
   }
-busquedaAvanzada("16")  
-  def busquedaAvanzada(busqueda:String){
+//busquedaAvanzada("16")  
+  def busquedaAvanzada(busqueda:String):ListBuffer[Propiedades]={
     var propiedadesx = new ListBuffer[Propiedades]()
     val conn:Connection = conexion.getConexion()
     val statement = conn.createStatement
@@ -19,9 +19,39 @@ busquedaAvanzada("16")
     while(rs.next()){
       if(rs.getString("PropertyNo")!=p){
         p=rs.getString("PropertyNo")
+        val street = rs.getString("street")
+      val city = rs.getString("city")
+      val postcode = rs.getString("postcode")
+      val types = rs.getString("type")
+      val rooms = rs.getByte("rooms")
+      val rent = rs.getInt("rent")
+      val noOwner = rs.getString("FK_ownerNo")
+      val noStaff = rs.getString("FK_staffNo")
+      val nobranch = rs.getString("FK_branchNo")
+      
       println(rs.getString("PropertyNo"))
+      val statement2 = conn.createStatement
+      val rs2 = statement2.executeQuery("Select * from privateowner where OwnerNo = '"+noOwner+"'")
+      var propietario=""
+     
+      while(rs2.next) {propietario=rs2.getString("fName")}
+      
+      
+      val statement3 = conn.createStatement
+      val rs3 = statement3.executeQuery("Select * from staff where StaffNo='"+noStaff+"'")
+      var personal=""
+      while(rs3.next) {personal=rs3.getString("fName")}
+            
+      val statement4 = conn.createStatement
+      val rs4 = statement4.executeQuery("Select * from branch where branchNo='"+nobranch+"'")
+      var sucursal=""
+     while(rs4.next) {sucursal = rs4.getString("Street")}
+      
+      val pr = new Propiedades(p, street, city, postcode, types, rooms, rent, propietario, personal, sucursal)
+      propiedadesx.+=(pr)
     }
       }
+    return propiedadesx
   }
   def baja(no:String):Unit={
     val statement2 = conn.createStatement
