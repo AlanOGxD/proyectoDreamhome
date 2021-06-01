@@ -8,6 +8,8 @@ import javax.imageio.ImageIO
 import scala.swing.event.ButtonClicked
 import java.sql.Connection
 import com.mysql.cj.x.protobuf.MysqlxCursor.Open
+import java.math.BigInteger
+import java.security.MessageDigest
 
 object Login extends SimpleSwingApplication {
 
@@ -54,6 +56,14 @@ object Login extends SimpleSwingApplication {
           background_=(Color.CYAN)
           
         }
+        def hash64(data: String) = {
+  val hash = String.format(
+               "%032x", 
+               new BigInteger(1, MessageDigest.getInstance("SHA-256").digest(data.getBytes("UTF-8")))
+             )
+  val hash64 = hash.reverse.padTo(64, "0").reverse.mkString 
+  hash64      
+}
         contents += btnIniciarSesion
         listenTo(btnIniciarSesion)
         contents += new Label("						")
@@ -64,6 +74,7 @@ object Login extends SimpleSwingApplication {
         val pass = textPass.peer.getText().toString()
         val user = textUsuario.text.toString()
         val us =new Usuario(user, pass)
+        print(hash64(pass))
      validarusuario(us)  
         }
       }
