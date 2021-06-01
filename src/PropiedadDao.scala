@@ -249,13 +249,18 @@ object PropiedadDao{
     var FP =""
     while(fp.next()){
        FP = fp.getString("OwnerNo")
-       println(FP)
+       //println(FP)
     }
     while(fs.next()){ FS=fs.getString("StaffNo")}
     while(fb.next()){ FB=fb.getString("branchNo")}
   
-   println(FS)
-   println(FB)
+   //println(FS)
+   //println(FB)
+   
+   val sta = conn.createStatement()
+   
+   val res = buscarPro(p)
+   if(res.isEmpty){
    val sqlf="Insert into propertyforrent (PropertyNo, street, city, postcode, type, rooms, rent, FK_ownerNo, FK_staffNo, FK_branchNo) values('"+p+"', '"+S+"','"+C+"','"+PC+"','"+T+"','"+RS+"','"+R+"','"+FP+"','"+FS+"','"+FB+"')"
       val rs2 = st4.execute(sqlf)
       
@@ -264,6 +269,8 @@ object PropiedadDao{
       }else{
         Dialog.showMessage(Ventana.top, "Error al realizar alta", "Alta Error", Dialog.Message.Info)
       }
+   }
+   Dialog.showMessage(Ventana.top, "Número de propiedad ya se encuentra registrado", "Alta Error", Dialog.Message.Info)
   }
 
 }
